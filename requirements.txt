@@ -1,0 +1,7 @@
+kafka-python==2.0.2
+redis==3.5.3
+tokenizers==0.12.1
+torch==1.11.0
+transformers==4.18.0
+redis-py-cluster==2.1.3
+

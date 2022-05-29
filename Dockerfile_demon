@@ -1,0 +1,11 @@
+FROM python:3.8-slim-buster
+
+WORKDIR /app
+RUN apt-get update -y
+
+COPY ./demon.py /app/
+COPY ./requirements_demon.txt /app/
+
+RUN pip3 install -r requirements_demon.txt
+
+CMD [ "python3", "./demon.py"]

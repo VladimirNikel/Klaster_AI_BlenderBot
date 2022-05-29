@@ -1,0 +1,95 @@
+version: "3.7"
+services:
+  blenderbot1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REDIS_CONNECT: '{
+        "hosts": [
+          {"host": "<IP_1>", "port": "<PORT_1>"}, 
+          {"host": "<IP_2>", "port": "<PORT_2>"}, 
+          {"host": "<IP_3>", "port": "<PORT_3>"}
+        ], 
+        "password": "<REDIS_PASSWORD>"
+      }'
+      ID_HOST: "aibot_1"
+      KAFKA_HOST: "<KAFKA_IP>:<KAFKA_PORT>"
+      MODEL: "400m"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.9'
+          memory: 3G
+        reservations:
+          cpus: '0.2'
+          memory: 2G
+  blenderbot2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REDIS_CONNECT: '{
+        "hosts": [
+          {"host": "<IP_1>", "port": "<PORT_1>"}, 
+          {"host": "<IP_2>", "port": "<PORT_2>"}, 
+          {"host": "<IP_3>", "port": "<PORT_3>"}
+        ], 
+        "password": "<REDIS_PASSWORD>"
+      }'
+      ID_HOST: "aibot_2"
+      KAFKA_HOST: "<KAFKA_IP>:<KAFKA_PORT>"
+      MODEL: "400m"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.9'
+          memory: 3G
+        reservations:
+          cpus: '0.2'
+          memory: 2G
+  blenderbot3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REDIS_CONNECT: '{
+        "hosts": [
+          {"host": "<IP_1>", "port": "<PORT_1>"}, 
+          {"host": "<IP_2>", "port": "<PORT_2>"}, 
+          {"host": "<IP_3>", "port": "<PORT_3>"}
+        ], 
+        "password": "<REDIS_PASSWORD>"
+      }'
+      ID_HOST: "aibot_3"
+      KAFKA_HOST: "<KAFKA_IP>:<KAFKA_PORT>"
+      MODEL: "400m"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.9'
+          memory: 3G
+        reservations:
+          cpus: '0.2'
+          memory: 2G
+  demon:
+    build:
+      context: .
+      dockerfile: Dockerfile_demon
+    environment:
+      DB_MESSAGES: "postgresql://<__USER__>:<__PASSWORD__>@<__IP__>:<__PORT__>/<__DB__>"
+      API: "http://<IP_BALANCER>:<PORT_BALANCER>/balancer"
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 50M
+        reservations:
+          cpus: '0.1'
+          memory: 30M
